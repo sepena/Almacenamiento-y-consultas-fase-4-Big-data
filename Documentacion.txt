@@ -1,0 +1,29 @@
+DOCUMENTACIÓN PARA LA BASE DE DATOS DEL INDICE DE COMPRAS DE UNA TIENDA POR CLIENTE.
+
+Explicación de la base de datos trabajada: Se busca trabajar el indice de ventas a los clientes de una tienda, para hacer un censo de sus datos y compras. Tomando en cuenta los siguientes 
+atributos para cada cliente por compra: nombre, edad, ciudad, compras, monto gastado. Todos estos atributos se usarán para distintas consultas y ejecución de comandos.
+
+
+MANIPULACIÓN DE CONJUNTOS DE DATOS:
+   - insertMany sirve para insertar los datos (documentos) en la tabla clientes de la base de datos. 
+   - insertOne realiza la acción de introducir un nuevo documento a la tabla en la base de datos. Se obtuvo como resultado el registro de la persona "Marco Rosario" y 
+     su información en la base de datos del IndiceCompras en la tabla "clientes".
+
+CONSULTAS BÁSICAS:
+   - db.clientes.find({}); dio como resultado la seleccion de todos los documentos en la base de datos
+   - db.clientes.updateOne({ name: 'Noah Martinez' }, { $set: { city: 'Houston' } }); da como resultado la actualización de la ciudad (city) del documento del cliente "Noah Martinez".
+   - db.clientes.deleteOne({ name: 'Harper Baker' });` elimina un documento específico, eliminando de la base de datos el documento del cliente al que le corresponde el nombre de "Harper Baker"
+
+CONSULTAS QUE HACEN USO DE FILTROS Y OTROS OPERADORES:
+   - db.clientes.find({ age: { $gt: 25 } }); filtra documentos donde la edad de los clientes es mayor a 25 años.
+   - db.clientes.find({ amountSpent: { $gte: 500, $lte: 1500 } }); Filtra los clientes cuya cantidad gastada en compras está entre 500 y 1500
+   - db.clientes.find({ city: { $in: ['Miami', 'San Francisco', 'Seattle'] } }); Filtra por ciudades de los clientes
+
+CONSULTAS DE AGREGACIÓN
+   - db.clientes.aggregate([{ $count: "total_customers" }]); Cuenta el total de clientes (documentos) existentes en la base de datos
+   - db.clientes.aggregate([{ $group: { _id: null, avgAge: { $avg: "$age" } } }]); Calcula el promedio de edad entre clientes. Dando como resultado, un promedio de 33,66
+   - db.clientes.aggregate([{ $group: { _id: null, totalSpent: { $sum: "$amountSpent" } } }]); Calcula la cantidad del amountSpent (cantidad gastada) de todos los clientes.
+     Dando como resultado, un total de gastos de 91700$ 
+   - db.clientes.aggregate([{ $group: { _id: null, amountSpent: { $avg: "$amountSpent" } } }]); Calcula el promedio de gastos por compras (amountSpent) de los clientes
+     dando un resultado de 926.26$
+
